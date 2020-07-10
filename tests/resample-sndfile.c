@@ -20,7 +20,7 @@
 #include <string.h>
 #include <math.h>
 
-#include <sys/time.h>
+//#include <sys/time.h>
 
 #define MIN(A, B) (A) < (B)? (A) : (B)
 
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
    double ratio = 0.0;
    double srcrate;
    double dstrate = 0.0;
-   struct timeval tv0, tv1;
+//   struct timeval tv0, tv1;
    double deltat;
    int numformats;
    int pos, bufferpos, outcount;
@@ -142,7 +142,7 @@ int main(int argc, char **argv)
    for(c=0; c<channels; c++)
       handle[c] = resample_open(1, ratio, ratio);
 
-   gettimeofday(&tv0, NULL);
+//   gettimeofday(&tv0, NULL);
 
    pos = 0;
    bufferpos = 0;
@@ -195,7 +195,7 @@ int main(int argc, char **argv)
 
    sf_close(srcfile);
    sf_close(dstfile);
-
+/*
    gettimeofday(&tv1, NULL);
    deltat =
       (tv1.tv_sec + tv1.tv_usec * 0.000001) -
@@ -203,7 +203,7 @@ int main(int argc, char **argv)
 
    printf("Elapsed time: %.3f seconds\n", deltat);
    printf("%d frames written to output file\n", outcount);
-
+   */
    free(src);
    free(srci);
    free(dst);

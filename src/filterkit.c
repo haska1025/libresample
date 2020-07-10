@@ -86,6 +86,11 @@ void lrsLpFilter(double c[], int N, double frq, double Beta, int Num)
    double IBeta, temp, temp1, inm1;
    int i;
 
+   // N 是滤波器系数个数的一半
+   // Num 是 采样频率吗？。
+   // frq 是截止频率
+   // x(t) = sin(Wt)/(PI * t) 这是理想低通滤波器的单位脉冲响应函数 h(t)，W 是截止频率。
+   // h(t) = sin(Wt)/(PI * t) = (W/PI) sinc(Wt/PI)，W = 2 * PI * frq，h(t) 的振幅是 2 * frq
    /* Calculate ideal lowpass filter impulse response coefficients: */
    c[0] = 2.0*frq;
    for (i=1; i<N; i++) {

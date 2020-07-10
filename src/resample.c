@@ -28,7 +28,7 @@
 #include <string.h>
 
 typedef struct {
-   float  *Imp;
+   float  *Imp;// 存放滤波器系数
    float  *ImpD;
    float   LpScl;
    UWORD   Nmult;
@@ -109,11 +109,13 @@ void *resample_open(int highQuality, double minFactor, double maxFactor)
    hp->LpScl = 1.0;
    hp->Nwing = Npc*(hp->Nmult-1)/2; /* # of filter coeffs in right wing */
 
-   Rolloff = 0.90;
+   Rolloff = 0.90;// 9/10 
+   // 凯撒窗函数的 beta 参数
    Beta = 6;
 
    Imp64 = (double *)malloc(hp->Nwing * sizeof(double));
 
+   // (1/2) * (9/10)
    lrsLpFilter(Imp64, hp->Nwing, 0.5*Rolloff, Beta, Npc);
 
    hp->Imp = (float *)malloc(hp->Nwing * sizeof(float));
