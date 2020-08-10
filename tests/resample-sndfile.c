@@ -130,11 +130,14 @@ int main(int argc, char **argv)
           argv[3], (int)srcinfo.frames, srcrate);
    printf("Destination: %s (%.2f Hz, ratio=%.5f)\n", argv[4],
           dstrate, ratio);
-
+   // 样本是以 4096 大小的块为单元来处理的。
    srclen = 4096;
+   // 目标样本在源样本基础上，除了乘以 ratio = Fs/Fo 以外，另外扩充了 1000 大小。
    dstlen = (srclen * ratio + 1000);
+   // 读出 srclen 个所有声道的样本
    srci = (float *)malloc(srclen * channels * sizeof(float));
    dsti = (float *)malloc(dstlen * channels * sizeof(float));
+   // 保存某一个声道的样本
    src = (float *)malloc(srclen * sizeof(float));
    dst = (float *)malloc(dstlen * sizeof(float));
 

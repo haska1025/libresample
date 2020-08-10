@@ -101,12 +101,15 @@ void *resample_open(int highQuality, double minFactor, double maxFactor)
    hp->minFactor = minFactor;
    hp->maxFactor = maxFactor;
  
+   // hp->Nmult 定义了参与运算的滤波器系数 h(k) 的个数 N
    if (highQuality)
       hp->Nmult = 35;
    else
       hp->Nmult = 11;
 
    hp->LpScl = 1.0;
+   // 这里是将滤波器系数的样本放大 Npc 倍，这里取的是 4096，然后计算卷积的时候，每隔 4096 取一个 h(k) 参与运算。
+   // 即， h(k),h(k+4096), h(k + 8192),....,
    hp->Nwing = Npc*(hp->Nmult-1)/2; /* # of filter coeffs in right wing */
 
    Rolloff = 0.90;// 9/10 

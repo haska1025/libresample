@@ -45,6 +45,14 @@ int lrsSrcUp(float X[],
     double dt;                 /* Step through input signal */ 
     double endTime;            /* When Time reaches EndTime, return to user */
     
+    /**
+     * 这一段逻辑主要是进行插值。
+     * fo(frequence old)：重采样前，信号 x[n] 的采样频率
+     * to(time old)：重采样前，采样间隔。to = 1/fo
+     * fn(frequence new): 重采样后，信号 x[n] 的采样频率
+     * tn(time new): 重采样后，采样间隔。tn = 1/fn
+     * L = fn/fo，这里的 factor 就是 fn/fo，factor = (1/tn) / (1/to) = to/tn, tn = to/factor，可以得知重采样的时间间隔是采样前的 1/factor
+     */
     dt = 1.0/factor;           /* Output sampling period */
     
     Ystart = Y;
@@ -54,6 +62,7 @@ int lrsSrcUp(float X[],
         double LeftPhase = CurrentTime-floor(CurrentTime);
         double RightPhase = 1.0 - LeftPhase;
 
+        // 插值，连续插入 factor 个 x[(int)currentTime]
         Xp = &X[(int)CurrentTime]; /* Ptr to current input sample */
         /* Perform left-wing inner product */
         v = lrsFilterUp(Imp, ImpD, Nwing, Interp, Xp,

@@ -86,8 +86,18 @@ void lrsLpFilter(double c[], int N, double frq, double Beta, int Num)
    double IBeta, temp, temp1, inm1;
    int i;
 
-   // N 是滤波器系数个数的一半
-   // Num 是 采样频率吗？。
+   /*
+    M 抽头 FIR 滤波器的 H(jw) 如下：
+    其中 -(K-1)/2 到 (K-1)/2 是通带，其他是阻带。
+
+                            |<--- K ->|
+                            +---------+
+                            |         |
+        --+-----------------+----+----+------------------+----
+        -M/2 + 1       -(K-1)/2  0  (K-1)/2             M/2
+   */
+   // N 是滤波器系数个数的一半，即 N = M/2
+   // Num 是通带长度 K。
    // frq 是截止频率
    // x(t) = sin(Wt)/(PI * t) 这是理想低通滤波器的单位脉冲响应函数 h(t)，W 是截止频率。
    // h(t) = sin(Wt)/(PI * t) = (W/PI) sinc(Wt/PI)，W = 2 * PI * frq，h(t) 的振幅是 2 * frq
@@ -97,6 +107,9 @@ void lrsLpFilter(double c[], int N, double frq, double Beta, int Num)
       temp = PI*(double)i/(double)Num;
       c[i] = sin(2.0*temp*frq)/temp; /* Analog sinc function, cutoff = frq */
    }
+
+   // add by czx
+   return;
 
    /* 
     * Calculate and Apply Kaiser window to ideal lowpass filter.
@@ -161,6 +174,7 @@ float lrsFilterUp(float Imp[],  /* impulse response */
       } 
    else 
       while (Hp < End) {
+          // 在做卷积吗？ （h . x)(t)
          t = *Hp;		/* Get filter coeff */
          t *= *Xp;		/* Mult coeff by input sample */
          v += t;			/* The filter output */
